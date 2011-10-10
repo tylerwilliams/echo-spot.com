@@ -29,7 +29,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 logger = logging.getLogger(__name__)
 
-pt = spotlib.MySSM(config_file.get("echospot", "premium_spotify_user"), config_file.get("echospot", "premium_spotify_pass"))
+pt = spotlib.MySSM(config_file.get("spotserver", "premium_spotify_user"), config_file.get("spotserver", "premium_spotify_pass"))
 pt.setDaemon(True)
 pt.start()
 
