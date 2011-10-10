@@ -1,0 +1,299 @@
+/* Reset */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+body {
+	background: #FFFFFF url('/static/images/bg.jpg') repeat-x top left;
+	background-attachment: fixed;
+	font-family: Arial, sans-serif;
+	color: #fff;
+	font-size: 16px;
+	line-height: 1.4em;
+	height: 100%;
+}
+
+#container {
+  width: 800px;
+  margin:0px auto;
+  text-align:left;  
+  position: relative;
+  padding: 30px 0 0px 0;
+  min-height: 100%;
+  height: auto;
+/*  outline: solid 1px;*/
+}
+
+#header {
+/*  outline: solid 1px;*/
+  margin: auto;
+/*  padding-top: 80px;*/
+  text-align:left;
+  width: 450px;
+  position: relative;
+}
+
+#headline {
+  text-align: center;
+  font-size: 48px;
+  min-height: 48px;
+  color: black;
+  font-family: Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 12px 0 10px 0;
+  font-weight: inherit;
+  font-style: normal;
+  vertical-align: baseline;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  text-shadow: 1px 1px 4px rgba(138, 15, 36, 0.15);
+  display: block;
+  color: white;
+  white-space: nowrap;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 3.5em;
+  font-weight: 800;
+  -webkit-mask-image: url(/static/images/title_mask.png);
+}
+
+#search {
+  text-align: center;
+  margin: auto;
+  width: 450px;
+}
+
+.searchbox {
+    width: 444px;
+    height: 20px;
+    font-size: 16px;
+}
+
+.searchdiv {
+    text-align: center;
+    margin: auto;
+}
+
+.ui-menu-item {
+    font-size: 16px;
+}
+
+#search_box {
+    text-align: center;
+    margin: auto;
+}
+
+html, body, #container { 
+    height: 100%; 
+}
+body > #container { 
+    height: auto; 
+    min-height: 100%; 
+}
+
+.search input {
+    padding: 6px;
+    width: 436px;
+    background-color: white;
+    border: 1px solid #CCC;
+    -moz-transition: border linear .2s,-moz-box-shadow linear .2s;
+    -webkit-transition: border linear .2s,-webkit-box-shadow linear .2s;
+    -o-transition: border linear .2s,box-shadow linear .2s;
+    transition: border linear .2s,box-shadow linear .2s;
+    border-radius: 4px;
+    font-family: sans-serif;
+    color: #333;
+    font: 99% arial,helvetica,clean,sans-serif;
+}
+
+#searchinput_wrapper {
+    background-color: rgba(200, 200, 200, 0.3);
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    background-color: #EEE;
+    background-color: rgba(200, 200, 200, 0.35);
+    padding: 4px 4px;
+    margin: 6px 0 0 -6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    line-height: 36px;
+    zoom: 1;
+}
+
+#searchbutton_wrapper button {
+    font-size: 100%;
+/*    padding: 6px;*/
+/*    _overflow: visible;*/
+    margin: 4px auto;
+    font-weight: bold;
+}
+
+.button:hover, .button:focus {
+    background-position: 0 -6px;
+    border-color: #999 #999 #666;
+    color: black;
+    text-decoration: none;
+}
+
+.button {
+    -moz-border-radius: 4px;
+    -khtml-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    
+    background: #DDD url(/static/images/bg-btn.gif) repeat-x 0 0;
+    border-color: #BBB #BBB #999;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: top;
+    font: 12px/15px Helvetica Neue,Arial,"Lucida Grande",Sans-serif;
+    margin: 0;
+    overflow: visible;
+    padding: 5px 9px 5px 9px;
+    text-shadow: 0 1px #F0F0F0;
+    color: #333;
+    font-family: sans-serif;
+    color: #333;
+    font: 99% arial,helvetica,clean,sans-serif;
+}
+
+#status {
+    width: 500px;
+    margin: auto;
+    min-height:30px;
+    text-align: center;
+    margin: auto;
+    margin-top: 4px;
+/*    outline: solid 1px;*/
+}
+
+#results {
+    width: 500px;
+    margin: auto;
+    height: 100%;
+    background:  rgba(255, 255, 255, 0.25);
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+}
+
+.result-body {
+    height: 100px;
+    padding: 5px 10px 5px 10px;
+}
+
+.result-text a {
+    color: #332;
+/*    color: rgba(93, 103, 113, 1);*/
+    text-decoration: none;
+}
+
+.result-text a:hover {
+    color: rgba(93, 103, 113, 1);
+    text-decoration: underline;
+}
+.result-text {
+    display: inline;
+    max-width: 500px;
+    min-height: 100px;
+    height: 100px;
+    vertical-align: middle;
+    display: table-cell; 
+    vertical-align:middle;
+    
+    font: 99% arial,helvetica,clean,sans-serif;
+    font-size: 20px;
+    font-weight:bold;
+    color: #333;
+}
+
+.thumbnail {
+    float: left;
+    border: none 0px;
+    padding-right: 10px;
+    max-height: 100px;
+    max-width: 100px;
+    overflow: hidden;
+}
+
+#footer {
+    margin:0px auto;
+    clear: both;
+    position: relative;
+    z-index: 10;
+    height: 3em;
+    margin-top: 3em;
+    padding-top: 5px;
+    text-align: center;
+    font-size: 12px;
+    color: rgba(93, 103, 113, 1);
+}
+
+#about h3 {
+    font: 99% arial,helvetica,clean,sans-serif;
+    font-size: 16px;
+    color: #333;
+    font-weight:bold;
+}
+
+#about {
+    display:none;
+    width: 500px;
+    font: 99% arial,helvetica,clean,sans-serif;
+    font-size: 12px;
+    color: #333;
+}
+.aboutimg {
+    float: left;
+    border: none 0px;
+    padding: 0 10px 10px 0;
+}
+.aboutp {
+    float: left;
+    border: none 0px;
+    padding: 5px
+}
