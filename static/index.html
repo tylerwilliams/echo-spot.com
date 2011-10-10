@@ -14,7 +14,7 @@
     <script type="text/javascript" src="/static/js/spin.min.js"></script>
     <script type="text/javascript" src="/static/js/echospot.js"></script>
 	
-    <title>echo-spot.com</title>
+    <title>ECHO SPOT</title>
   </head>
     
   <body>
@@ -51,6 +51,7 @@
             }
             //hook the submit button on the search form
             $("form").submit(function() {
+                $("#searchfield").autocomplete("close");
                 var query_str = $("input#searchfield").val();
                 return do_search(query_str);
             });
@@ -86,13 +87,18 @@
                         do_search(query_str);
                     }
                 });
+                $("#searchfield").blur(function(){
+                    $(this).autocomplete("close");
+                });
             });
         </script>
     
         <div id="status"></div>
         <div id="results"></div>
         <div id="about" title="About">
-            <p class="aboutp"> Echo Spot combines the power of <a href="http://the.echonest.com">The Echo Nest's</a> recommendation engine with <a href="http://www.spotify.com">Spotify's</a> easy to use streaming service. The code is open source and available <a href="">here</a>.</p>
+            <p class="aboutp"> Echo Spot combines the power of <a href="http://the.echonest.com">The Echo Nest's</a> recommendation engine with <a href="http://www.spotify.com">Spotify's</a> easy to use streaming service. The code is open source and available <a href="https://github.com/tylerwilliams/echo-spot.com">here</a>.</p>
+            <br></br>
+            <br></br>
             <h3>Legal Stuff:</h3>
             <p class="aboutp"><img class="aboutimg" src="/static/images/spotlogo.png"></img>This product uses a SPOTIFY API but is not endorsed, certified or otherwise approved in any way by Spotify. Spotify is the registered trade mark of the Spotify Group.</p>
             <br></br>
@@ -116,10 +122,15 @@
     
     <div id="footer">
         <div id="attribution">
-            <p> created by: <a href="http://twitter.com/tylerbw">@tylerbw</a> and <a href="http://twitter.com/jsundram">@jsundram</a> | background by: <a href="http://lisasolberg.tumblr.com/">lisasolberg</a> | <a href="javascript:$('#about').dialog();">about</a></p>
+            <p> created by: <a href="http://twitter.com/tylerbw">@tylerbw</a> and <a href="http://twitter.com/jsundram">@jsundram</a> | background by: <a href="http://lisasolberg.tumblr.com/">lisasolberg</a> | <a href="javascript:$('#about').dialog({
+                    autoOpen: true,
+                    resizable: false,
+                    modal: true,
+                    width:'400px'
+            });">about</a></p>
         </div>
     </div>
-    <!-- <script type="text/javascript">
+    <script type="text/javascript">
         var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
         document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
         </script>
@@ -127,6 +138,6 @@
         try {
         var pageTracker = _gat._getTracker("UA-3675615-14");
         pageTracker._trackPageview();
-    } catch(err) {}</script> -->
+    } catch(err) {}</script>
   </body>
 </html>

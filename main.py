@@ -39,7 +39,7 @@ logging.getLogger().addHandler(logging_handler)
 logger = logging.getLogger(__name__)
 
 config.ECHO_NEST_API_KEY=config_file.get("echospot", "echo_nest_api_key")
-
+config.TRACE_API_CALLS=True
 ### GLOBALS ###
 DUMMY_SPOT_URLS = False
 MAX_PLAYLIST_LENGTH = 10
