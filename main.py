@@ -1,7 +1,8 @@
 import sys, os
 reload(sys)
 sys.setdefaultencoding('utf-8')
-sys.path.append(os.path.dirname(os.path.abspath( __file__ )))
+cwd = os.path.dirname(os.path.abspath( __file__ ))
+sys.path.append(cwd)
 import time
 import json
 import uuid
@@ -20,7 +21,7 @@ os.environ['PYTHON_EGG_CACHE'] = '/tmp'
 import memo
 
 config_file = ConfigParser.SafeConfigParser()
-config_file.read('echospot.conf')
+config_file.read(os.path.join(cwd, "echospot.conf"))
 
 try:
     logging_handler = handlers.WatchedFileHandler(config_file.get("echospot", "log_location"))
