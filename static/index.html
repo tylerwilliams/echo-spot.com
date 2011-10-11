@@ -131,18 +131,23 @@
                 }
               });
               $(window).trigger( 'hashchange' );
+              
+              $("#aboutlink").click(function () {
+                  javascript:$('#about').dialog({
+                          autoOpen: true,
+                          resizable: false,
+                          modal: true,
+                          width:'400px'
+                  });
+                  return false;
+              });              
             });
         </script>
     </div>
     
     <div id="footer">
         <div id="attribution">
-            <p> created by: <a href="http://twitter.com/tylerbw">@tylerbw</a> and <a href="http://twitter.com/jsundram">@jsundram</a> | background by: <a href="http://lisasolberg.tumblr.com/">lisasolberg</a> | <a href="javascript:$('#about').dialog({
-                    autoOpen: true,
-                    resizable: false,
-                    modal: true,
-                    width:'400px'
-            });">about</a></p>
+            <p> created by: <a href="http://twitter.com/tylerbw">@tylerbw</a> and <a href="http://twitter.com/jsundram">@jsundram</a> | background by: <a href="http://lisasolberg.tumblr.com/">lisasolberg</a> | <a href="" id="aboutlink">about</a></p>
         </div>
     </div>
     <script type="text/javascript">
