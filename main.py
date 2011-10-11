@@ -191,13 +191,15 @@ def get_spotify_playlist_urn(playlist_id, seed_artists, playlist):
     # make a unique playlist name
     allowed_playlist_length = 255-len(playlist_id)-6
     playlist_name = ", ".join(seed_artists)
-    playlist_name = playlist_name[:allowed_playlist_length]+"... -"+playlist_id
-    
+    if len(playlist_name) > allowed_playlist_length:
+        playlist_name = playlist_name[:allowed_playlist_length]+"..."
+    playlist_name = playlist_name+" - "+playlist_id
     # call out to spotserver and make a playlist
     urns = [s.urn for s in playlist]
     playlist_response = json.loads(urllib.urlopen("http://localhost:1337/playlist", json.dumps({'title':playlist_name})).read())
     link = playlist_response['uri']
-    r = urllib.urlopen("http://localhost:1337/playlist/%s/add?index=0" % link, json.dumps( urns )).read()
+    t = threading.Thread(target=urllib.urlopen, args=("http://localhost:1337/playlist/%s/add?index=0" % link, json.dumps( urns )))
+    t.start()
     return link
 
 
