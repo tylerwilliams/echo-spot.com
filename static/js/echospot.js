@@ -6,6 +6,24 @@ $.extend({
     }
 });
 
+function clear_container(container_name) {
+    var elmt = document.getElementById(container_name);
+    elmt.innerHTML="";
+}
+
+function show_spacer() {
+    $("#spacer").height(200);
+}
+function hide_spacer() {
+    $("#spacer").height(0);
+}
+
+function clear_results() {
+    clear_container("results");
+    clear_container("status");
+    $("#searchfield").val("");
+}
+
 // DOING SHIT SPINNER
 var opts = {
   lines: 12, // The number of lines to draw
@@ -34,11 +52,20 @@ $.fn.spin = function(opts) {
   return this;
 };
 
+var history_cache = {
+    // results is empty by default
+    '': ""
+};
+
 // LOAD PLAYLIST RESULTS
 function injectPlaylist(json) {
-    $("#results").spin();
-    $("#spacer").height(0);
-    keys = $.keys(json.playlist);
+    $("#results").spin(); // disable results spinner, results are here
+    hide_spacer(); // remove spacer div to make room for results g-style
+    $.bbq.pushState( {pid:json.playlist_id} ); //
+    history_cache[json.playlist_id] = json;
+    $("#searchfield").val(json.query);
+    
+    playlist = json.playlist;
     var results = "";
     var plist = "";
     
@@ -46,9 +73,8 @@ function injectPlaylist(json) {
 
     $("#status").html("<a href="+json.playlist_urn+">Open in Spotify!</a>").show().fadeIn(1000);
     results += "<ul>";
-    for (i=0; i<keys.length; i++) {
-        key = keys[i];
-        val = json.playlist[key];
+    for (i=0; i<playlist.length; i++) {
+        val = playlist[i];
         
         image_url = val['image'];
         artist = val['artist'];

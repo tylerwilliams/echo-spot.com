@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/base/jquery-ui.css" type="text/css" media="all"> 
     
     <script type="text/javascript" src="/static/js/spin.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.ba-bbq.min.js"></script>
     <script type="text/javascript" src="/static/js/echospot.js"></script>
 	
     <title>ECHO SPOT</title>
@@ -37,16 +38,18 @@
         </div>
     
         <script type="text/javascript">
-            function clear_container(container_name) {
-                var elmt = document.getElementById(container_name);
-                elmt.innerHTML="";
-            }
-
             function do_search(query_str) {
                 clear_container("results");
                 clear_container("status");
                 $("#results").spin();
                 $.getJSON("/create_playlist", {query : query_str}, injectPlaylist);
+                return false;
+            }
+            function do_get(playlist_id) {
+                clear_container("results");
+                clear_container("status");
+                $("#results").spin();
+                $.getJSON("/get_playlist", {query : playlist_id}, injectPlaylist);
                 return false;
             }
             //hook the submit button on the search form
@@ -94,7 +97,7 @@
         </script>
     
         <div id="status"></div>
-        <div id="results"></div>
+        <div id="results" class="bbq-default"></div>
         <div id="about" title="About">
             <p class="aboutp"> Echo Spot combines the power of <a href="http://the.echonest.com">The Echo Nest's</a> recommendation engine with <a href="http://www.spotify.com">Spotify's</a> easy to use streaming service. The code is open source and available <a href="https://github.com/tylerwilliams/echo-spot.com">here</a>.</p>
             <br></br>
@@ -111,12 +114,24 @@
             $(document).ready(function () {
                 document.getElementById("searchfield").focus();
                 });
-            
-            if (window.location.hash) {
-                artist_name = window.location.hash.split('#')[1];
-                $("#status").text("Searching...").show();
-                $.getJSON("/create_playlist", {artist : artist_name}, injectPlaylist);
-            }
+                
+            $(function(){
+              $(window).bind( 'hashchange', function(e) {
+                var url_obj = $.deparam.fragment();
+                playlist_id = url_obj.pid || "";
+                if ( history_cache[playlist_id] != undefined ) {
+                    if (history_cache[playlist_id]) {
+                        injectPlaylist(history_cache[playlist_id]);
+                    } else {
+                        clear_results();
+                        show_spacer();
+                    }
+                } else {
+                    do_get(playlist_id);
+                }
+              });
+              $(window).trigger( 'hashchange' );
+            });
         </script>
     </div>
     
