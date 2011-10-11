@@ -195,11 +195,9 @@ def get_spotify_playlist_urn(playlist_id, seed_artists, playlist):
     
     # call out to spotserver and make a playlist
     urns = [s.urn for s in playlist]
-    jblob = json.dumps({'playlist_name':playlist_name, 'urns':urns})
-    params = urllib.urlencode({'request':jblob})
-    r = urllib.urlopen("http://localhost:1337/make_playlist", params)
-    response = json.loads(r.read())
-    link = response['playlist_urn']
+    playlist_response = json.loads(urllib.urlopen("http://localhost:1337/playlist", json.dumps({'title':playlist_name})).read())
+    link = playlist_response['uri']
+    r = urllib.urlopen("http://localhost:1337/playlist/%s/add?index=0" % link, json.dumps( urns )).read()
     return link
 
 
