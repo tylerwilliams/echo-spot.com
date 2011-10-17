@@ -14,7 +14,7 @@ import pprint
 
 import web
 import spotimeta
-from pyechonest import playlist, config
+from pyechonest import config as pyechonest_config, artist as pyechonest_artist, song as pyechonest_song, playlist as pyechonest_playlist, util as pyechonest_util
 
 os.environ['PYTHON_EGG_CACHE'] = '/tmp'
 import memo
@@ -37,8 +37,8 @@ logging.getLogger().addHandler(logging_handler)
 
 logger = logging.getLogger(__name__)
 
-config.ECHO_NEST_API_KEY=config_file.get("echospot", "echo_nest_api_key")
-config.TRACE_API_CALLS=True
+pyechonest_config.ECHO_NEST_API_KEY=config_file.get("echospot", "echo_nest_api_key")
+pyechonest_config.TRACE_API_CALLS=True
 
 DUMMY_SPOT_URLS = False
 MAX_PLAYLIST_LENGTH = 10
@@ -58,7 +58,7 @@ urls = ('/create_playlist', 'CreatePlaylist',
 
 def get_spotify_info_for_song(song):
     """
-        given a single `pyechonest.song.Song`, search the spotify metadata api
+        given a single `pyechonest_song.Song`, search the spotify metadata api
         for it and return a dictionary containing the songs likely `urn` and `artist_urn`
     """
     search_string = "artist:%s title:%s" % (song.artist_name, song.title)
@@ -73,7 +73,7 @@ def get_spotify_info_for_song(song):
 
 def expand_song_results_for_spotify(songs):
     """
-        expand a list of `pyechonest.song.Song` objects
+        expand a list of `pyechonest_song.Song` objects
         by adding spotify `urn` and `artist_urn` attributes
     """
     id_to_song_map = dict((song.id,song) for song in songs)
@@ -130,18 +130,89 @@ def create_rickroll_playlist():
         "playlist_id": 'e5eb777c132e42a98e33aa2b68e0f457',
     }
     return response
+
+def clean_and_parse_input(raw_input):
+    entities = filter(lambda x: x, raw_input.split(","))
+    stripped_entities = [entity.strip() for entity in entities]
+    return stripped_entities
     
-def create_playlist(artist_name_input):
-    if not artist_name_input:
+def classify_input(strings):
+    artist_names = []
+    song_names = []
+    for input in strings:
+        if " - " in input:
+            song_names.append(input)
+        else:
+            artist_names.append(input)
+    return artist_names, song_names
+
+def resolve_songs(song_names):
+    song_ids = []
+    
+    def resolve_name(song_name, resolved_id_list):
+        results = pyechonest_song.search(combined=song_name)
+        if results:
+            resolved_id_list.append(results[0].id)
+    
+    for st in range(0, len(song_names), 10):
+        threads = []    
+        for song_name in song_names[st:st+10]:
+            t = threading.Thread(target=resolve_name, args=(song_name, song_ids))
+            threads.append(t)
+            t.start()
+        for t in threads:
+            t.join()
+    
+    return song_ids
+
+def resolve_artists(artist_names):
+    artist_ids = []
+
+    def resolve_name(artist_name, resolved_id_list):
+        results = pyechonest_artist.search(artist_name)
+        if results:
+            resolved_id_list.append(results[0].id)
+
+    for st in range(0, len(artist_names), 10):
+        threads = []    
+        for artist_name in artist_names[st:st+10]:
+            t = threading.Thread(target=resolve_name, args=(artist_name, artist_ids))
+            threads.append(t)
+            t.start()
+        for t in threads:
+            t.join()
+
+    return artist_ids
+        
+def create_playlist(raw_input):
+    if not raw_input:
         return create_rickroll_playlist()
     
     # sanitize our input
-    artist_names = filter(lambda x: x, artist_name_input.split(","))
-    if not artist_names:
+    entities = clean_and_parse_input(raw_input)
+    
+    artist_names, song_names = classify_input(entities)
+    if song_names:
+        song_ids = resolve_songs(song_names)
+    else:
+        song_ids = []
+    
+    if not (artist_names or song_names):
         return create_rickroll_playlist()
     
+    # figure out playlist type based on input
+    playlist_type = "song-radio" if len(song_names) > 0 else "artist-radio"
+    
     # generate the Echo Nest playlist
-    en_playlist = playlist.static(type='artist-radio', artist=artist_names, buckets=['id:7digital','tracks'], limit=True, results=20)
+    try:
+        en_playlist = pyechonest_playlist.static(type=playlist_type, artist=artist_names, song_id=song_ids, buckets=['id:7digital','tracks'], limit=True, results=20)
+    except pyechonest_util.EchoNestAPIError:
+        artist_ids = resolve_artists(artist_names)
+        if artist_ids:
+            en_playlist = pyechonest_playlist.static(type=playlist_type, artist_id=artist_ids, song_id=song_ids, buckets=['id:7digital','tracks'], limit=True, results=20)
+        else:
+            return create_rickroll_playlist()
+            
     
     # tack on spotify IDs (and filter out songs we can't find in spotify)
     spotified_playlist = expand_song_results_for_spotify(en_playlist)
@@ -164,7 +235,7 @@ def create_playlist(artist_name_input):
         song_dicts.append(sd)
     
     response = {
-        "query": artist_name_input,
+        "query": raw_input,
         "playlist_urn": playlist_urn,
         "playlist": song_dicts,
         "playlist_id": playlist_id,
@@ -231,7 +302,7 @@ class GetPlaylist:
         except Exception:
             logging.exception("Couldn't make playlist!")
             response = create_rickroll_playlist()
-        logger.debug(pprint.pformat(response))
+        # logger.debug(pprint.pformat(response))
         json_playlist = json.dumps(response)
         return json_playlist
     
