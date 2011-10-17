@@ -222,7 +222,7 @@ def create_playlist(raw_input):
     
     # assemble the response and cache it
     playlist_id = uuid.uuid4().hex
-    playlist_urn = get_spotify_playlist_urn(playlist_id, artist_names, spotified_playlist)
+    playlist_urn = get_spotify_playlist_urn(playlist_id, artist_names + song_names, spotified_playlist)
     song_dicts = []
     for song in spotified_playlist:
         sd = {
