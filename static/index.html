@@ -83,15 +83,12 @@
                             }
                         });
                     },
-                    minLength: 3,
                     select: function( event, ui ) {
-                        $("#searchfield").val(ui.item.name);
+                        $("#searchfield").val(ui.item.label);
                         var query_str = $("input#searchfield").val();
                         do_search(query_str);
-                    }
-                });
-                $("#searchfield").blur(function(){
-                    $(this).autocomplete("close");
+                    },
+                    minLength: 3                    
                 });
             });
         </script>
