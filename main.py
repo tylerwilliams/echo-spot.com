@@ -309,6 +309,3 @@ class GetPlaylist:
 
 
 application = web.application(urls, globals()).wsgifunc()
-
-
-
